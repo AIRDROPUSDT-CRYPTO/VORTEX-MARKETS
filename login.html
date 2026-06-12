@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VORTEX MARKETS</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
+url('https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&w=1920&q=80');
+background-size:cover;
+background-position:center;
+}
+
+.login-card{
+width:90%;
+max-width:420px;
+padding:35px;
+border-radius:25px;
+background:rgba(17,25,40,0.8);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 0 25px rgba(0,255,255,.15);
+}
+
+.logo{
+text-align:center;
+font-size:34px;
+font-weight:800;
+margin-bottom:8px;
+background:linear-gradient(90deg,#00f7ff,#00ff88);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+text-align:center;
+color:#b7c3d1;
+margin-bottom:30px;
+font-size:14px;
+}
+
+.input-group{margin-bottom:18px;}
+
+input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:14px;
+background:#101826;
+color:white;
+font-size:15px;
+}
+
+input::placeholder{color:#8391a2;}
+
+.options{
+display:flex;
+align-items:center;
+margin-bottom:20px;
+color:white;
+font-size:14px;
+}
+
+.options input{width:auto;margin-right:8px;}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+cursor:pointer;
+font-size:16px;
+font-weight:700;
+background:linear-gradient(90deg,#00f7ff,#00ff88);
+color:#000;
+transition:.3s;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 0 20px rgba(0,255,170,.5);
+}
+
+/* ✅ TOAST */
+.toast{
+position:fixed;
+top:25px;
+right:25px;
+padding:14px 18px;
+border-radius:12px;
+color:#fff;
+font-weight:600;
+z-index:99999;
+opacity:0;
+transform:translateY(-20px);
+transition:0.3s ease;
+backdrop-filter:blur(10px);
+font-size:14px;
+}
+
+.toast.show{
+opacity:1;
+transform:translateY(0);
+}
+
+.toast.success{background:rgba(0,255,136,0.9);color:#000;}
+.toast.error{background:rgba(255,80,80,0.95);}
+
+.footer{
+position:absolute;
+bottom:15px;
+left:0;
+right:0;
+text-align:center;
+color:#b0b0b0;
+font-size:12px;
+}
+.link{
+margin-top:18px;
+text-align:center;
+font-size:13px;
+color:#b7c3d1;
+}
+
+.link a{
+color:#00f7ff;
+text-decoration:none;
+font-weight:600;
+transition:0.3s;
+}
+
+.link a:hover{
+color:#00ff88;
+text-shadow:0 0 10px rgba(0,255,200,0.6);
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+<div class="logo">VORTEX MARKETS</div>
+
+<div class="subtitle">Advanced Crypto Investment Platform</div>
+
+<div class="input-group">
+<input type="email" id="email" placeholder="Email Address">
+</div>
+
+<div class="input-group">
+<input type="password" id="password" placeholder="Password">
+</div>
+
+<div class="options">
+<input type="checkbox" id="remember">
+<label for="remember">Remember Me</label>
+</div>
+
+<button onclick="loginUser()">LOGIN</button>
+<div class="link">
+Don't have an account? <a href="register.html">Register</a>
+</div>
+</div>
+
+<div class="footer">
+© 2026 VORTEX MARKETS. All Rights Reserved.
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+setPersistence,
+browserLocalPersistence,
+browserSessionPersistence,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+import {
+getDatabase,
+ref,
+update
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyD4NQ9EsQqerx6y7v322p2ycraoDWJSRcM",
+authDomain: "airdropusdt-767d7.firebaseapp.com",
+databaseURL: "https://airdropusdt-767d7-default-rtdb.europe-west1.firebasedatabase.app",
+projectId: "airdropusdt-767d7",
+storageBucket: "airdropusdt-767d7.firebasestorage.app",
+messagingSenderId: "627616603037",
+appId: "1:627616603037:web:63041f067800c97fab6d74"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+/* ✅ FIX: Toast function MUST be inside module scope */
+function showToast(message, type="success") {
+
+const toast = document.getElementById("toast");
+
+toast.className = `toast ${type}`;
+toast.innerHTML = message;
+
+setTimeout(() => toast.classList.add("show"), 100);
+
+setTimeout(() => toast.classList.remove("show"), 3000);
+}
+/* optional global access */
+window.showToast = showToast;
+
+/* auto skip login */
+onAuthStateChanged(auth, (user) => {
+if (user) window.location.href = "dashboard.html";
+});
+
+/* LOGIN */
+window.loginUser = async () => {
+
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+const remember = document.getElementById("remember").checked;
+
+if (!email || !password) {
+showToast("Enter email and password","error");
+return;
+}
+
+try {
+
+await setPersistence(
+auth,
+remember ? browserLocalPersistence : browserSessionPersistence
+);
+
+const userCredential = await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+const user = userCredential.user;
+
+/* Firebase sync */
+await update(ref(db, "users/" + user.uid), {
+uid: user.uid,
+email: user.email,
+online: true,
+lastLogin: Date.now()
+});
+
+showToast("Login Successful","success");
+
+setTimeout(() => {
+window.location.href = "dashboard.html";
+}, 1200);
+
+} catch (error) {
+
+switch (error.code) {
+
+case "auth/invalid-email":
+showToast("Invalid email format","error");
+break;
+
+case "auth/user-not-found":
+showToast("Account not found","error");
+break;
+
+case "auth/wrong-password":
+showToast("Wrong password","error");
+break;
+
+case "auth/invalid-credential":
+showToast("Invalid login details","error");
+break;
+
+default:
+showToast("Login failed","error");
+break;
+}
+}
+};
+
+</script>
+
+</body>
+</html>
