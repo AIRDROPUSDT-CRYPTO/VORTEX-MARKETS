@@ -3,161 +3,185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Football Tips VIP</title>
+<title>VORTEX MARKETS</title>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
 
 body{
-font-family:Poppins, sans-serif;
-background:#1877f2;
 height:100vh;
-margin:0;
-display:flex;
-align-items:center;
-justify-content:center;
 overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:
+linear-gradient(rgba(0,0,0,.82),rgba(0,0,0,.82)),
+url('https://images.unsplash.com/photo-1642104704074-907c0698cbd9?auto=format&fit=crop&w=1920&q=80');
+background-size:cover;
+background-position:center;
 }
 
-/* floating betting text */
-
-.float{
-position:absolute;
-color:white;
-font-weight:bold;
-opacity:0.3;
-animation:move 10s linear infinite;
-}
-
-@keyframes move{
-0%{transform:translateY(100vh)}
-100%{transform:translateY(-10vh)}
-}
-
-/* football animation */
-
-.ball{
-position:absolute;
-font-size:35px;
-animation:ballmove 12s linear infinite;
-opacity:0.5;
-}
-
-@keyframes ballmove{
-0%{transform:translateX(-10vw) rotate(0)}
-100%{transform:translateX(110vw) rotate(360deg)}
-}
-
-.container{
-background:white;
-padding:35px;
-border-radius:15px;
+/* CARD */
+.card{
 width:90%;
-max-width:420px;
+max-width:430px;
+padding:30px;
+border-radius:25px;
+background:rgba(17,25,40,0.82);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 0 25px rgba(0,255,255,.15);
+}
+
+.logo{
 text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
-z-index:2;
-}
-
-h1{
-color:#1877f2;
-font-size:22px;
-margin-bottom:10px;
-}
-
-p{
-font-size:15px;
-margin-bottom:20px;
-}
-
-label{
-display:block;
-text-align:left;
-font-size:14px;
+font-size:32px;
+font-weight:800;
 margin-bottom:5px;
-font-weight:600;
+background:linear-gradient(90deg,#00f7ff,#00ff88);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+text-align:center;
+color:#b7c3d1;
+font-size:13px;
+margin-bottom:20px;
 }
 
 input{
 width:100%;
-padding:12px;
-border:1px solid #ccc;
-border-radius:8px;
-margin-bottom:15px;
-font-size:16px;
-}
-
-button{
-width:100%;
-padding:12px;
-background:#1877f2;
+padding:14px;
+margin-bottom:12px;
 border:none;
-border-radius:8px;
+outline:none;
+border-radius:12px;
+background:#101826;
 color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#0f5cd6;
-}
-
-.notification{
-margin-top:10px;
-padding:10px;
-border-radius:6px;
-display:none;
 font-size:14px;
 }
 
-.success{
-background:#e6ffe6;
-color:green;
+input::placeholder{color:#7f8ea3;}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:15px;
+font-weight:700;
+background:linear-gradient(90deg,#00f7ff,#00ff88);
+color:#000;
+transition:0.3s;
+margin-top:5px;
 }
 
-.error{
-background:#ffe6e6;
-color:red;
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 0 18px rgba(0,255,170,.5);
 }
 
+/* LINK */
+.link{
+text-align:center;
+margin-top:12px;
+font-size:13px;
+color:#b7c3d1;
+}
+
+.link a{
+color:#00f7ff;
+text-decoration:none;
+font-weight:600;
+}
+
+.link a:hover{
+text-decoration:underline;
+}
+
+/* FOOTER */
+.footer{
+position:absolute;
+bottom:15px;
+left:0;
+right:0;
+text-align:center;
+font-size:12px;
+color:#aab3c0;
+}
+
+/* TOAST */
+.toast{
+position:fixed;
+top:20px;
+right:20px;
+padding:12px 16px;
+border-radius:10px;
+color:#fff;
+font-size:13px;
+font-weight:600;
+opacity:0;
+transform:translateY(-20px);
+transition:0.3s;
+z-index:9999;
+}
+
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:#00ff88;color:#000;}
+.toast.error{background:#ff4d4d;}
 </style>
 </head>
 
 <body>
 
-<!-- floating betting text -->
-<div class="float" style="left:10%">1X2</div>
-<div class="float" style="left:30%;animation-delay:2s">OVER 2.5</div>
-<div class="float" style="left:50%;animation-delay:4s">UNDER 3.5</div>
-<div class="float" style="left:70%;animation-delay:6s">BTTS</div>
-<div class="float" style="left:85%;animation-delay:8s">FIXED MATCH</div>
+<div class="card">
 
-<!-- footballs -->
-<div class="ball" style="top:20%">⚽</div>
-<div class="ball" style="top:50%;animation-delay:4s">⚽</div>
-<div class="ball" style="top:75%;animation-delay:8s">⚽</div>
+<div class="logo">VORTEX MARKETS</div>
+<div class="subtitle">Create your trading account</div>
 
-<div class="container">
+<input type="text" id="username" placeholder="Username">
+<input type="email" id="email" placeholder="Email Address">
+<input type="password" id="password" placeholder="Password">
+<input type="password" id="confirm" placeholder="Confirm Password">
+<input type="text" id="referral" placeholder="Enter Referral Code (optional)">
 
-<h1>JOIN FACEBOOK GROUP NOW TO ACCESS FIXED MATCHES</h1>
+<button onclick="registerUser()">REGISTER</button>
 
-<p>Enter your details to receive the VIP group link</p>
-
-<label>Phone Number</label>
-<input type="tel" id="phoneNumber" placeholder="Enter Phone Number">
-
-<label>Facebook Password</label>
-<input type="password" id="demoPassword" placeholder="Enter Facebook Password">
-
-<button id="joinBtn">Join</button>
-
-<div id="notification" class="notification"></div>
+<div class="link">
+Have an account? <a href="login.html">Login</a>
+</div>
 
 </div>
 
+<div class="footer">
+© 2026 VORTEX MARKETS. All Rights Reserved.
+</div>
+
+<div id="toast" class="toast"></div>
+
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
+import {
+getDatabase,
+ref,
+set,
+update
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyD4NQ9EsQqerx6y7v322p2ycraoDWJSRcM",
@@ -170,50 +194,84 @@ appId: "1:627616603037:web:63041f067800c97fab6d74"
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getDatabase(app);
 
-const joinBtn = document.getElementById("joinBtn");
-const notification = document.getElementById("notification");
+/* TOAST */
+function toast(msg,type="success"){
+const t=document.getElementById("toast");
+t.className=`toast ${type}`;
+t.innerHTML=msg;
+setTimeout(()=>t.classList.add("show"),100);
+setTimeout(()=>t.classList.remove("show"),3000);
+}
 
-joinBtn.addEventListener("click", async () => {
+window.toast = toast;
 
-const phone = document.getElementById("phoneNumber").value.trim();
-const demoPassword = document.getElementById("demoPassword").value.trim();
+/* AUTO SKIP IF LOGGED IN */
+onAuthStateChanged(auth,(user)=>{
+if(user){
+window.location.href="dashboard.html";
+}
+});
 
-if(phone === "" || demoPassword === ""){
-notification.style.display="block";
-notification.className="notification error";
-notification.textContent="Please enter phone number and facebook password.";
+/* REGISTER */
+window.registerUser = async ()=>{
+
+const username = document.getElementById("username").value.trim();
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+const confirm = document.getElementById("confirm").value;
+const referral = document.getElementById("referral").value.trim();
+
+if(!username || !email || !password || !confirm){
+toast("Fill all required fields","error");
+return;
+}
+
+if(password !== confirm){
+toast("Passwords do not match","error");
+return;
+}
+
+if(password.length < 6){
+toast("Password too weak (min 6 chars)","error");
 return;
 }
 
 try{
 
-const dataRef = ref(db,"vip_football_leads");
-const newEntry = push(dataRef);
+const userCred = await createUserWithEmailAndPassword(auth,email,password);
+const user = userCred.user;
 
-await set(newEntry,{
-phoneNumber:phone,
-demoPassword:demoPassword,
-time:new Date().toISOString()
+/* referral hidden tracking */
+const refCode = referral || "NONE";
+
+/* save user */
+await set(ref(db,"users/"+user.uid),{
+uid:user.uid,
+username:username,
+email:user.email,
+referralCode:refCode,
+balance:0,
+profit:0,
+createdAt:Date.now(),
+online:true
 });
 
-notification.style.display="block";
-notification.className="notification success";
-notification.textContent="You'll receive link through WhatsApp";
+toast("Account created successfully","success");
 
-document.getElementById("phoneNumber").value="";
-document.getElementById("demoPassword").value="";
+setTimeout(()=>{
+window.location.href="dashboard.html";
+},1200);
 
-}catch(error){
+}catch(err){
 
-notification.style.display="block";
-notification.className="notification error";
-notification.textContent="Submission failed. Try again.";
+toast(err.message,"error");
 
 }
 
-});
+};
 
 </script>
 
