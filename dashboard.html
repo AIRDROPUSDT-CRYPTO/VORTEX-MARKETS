@@ -342,7 +342,25 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 /* USER ID */
-const userId = "user1";
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const auth = getAuth(app);
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+window.location.href="login.html";
+return;
+}
+
+const userId = user.uid;
+
+// Load balance and trades here
+
+});
 
 /* REALTIME BALANCE */
 const balanceRef = ref(db, `users/${userId}/balance`);
@@ -437,7 +455,7 @@ function renderMarkets() {
 
 /* AUTO REFRESH */
 loadMarkets();
-setInterval(loadMarkets, 1000);
+setInterval(loadMarkets, 10000);
 
 </script>   
     
