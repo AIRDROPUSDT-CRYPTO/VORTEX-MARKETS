@@ -1,0 +1,445 @@
+<!DOCTYPE html>    
+<html lang="en">    
+<head>    
+<meta charset="UTF-8">    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">    
+<title>VORTEX MARKETS - Home</title>    
+    
+<style>    
+*{    
+margin:0;    
+padding:0;    
+box-sizing:border-box;    
+font-family:'Segoe UI',sans-serif;    
+}    
+body{    
+background:    
+radial-gradient(circle at 15% 20%, rgba(0,255,247,0.25), transparent 40%),    
+radial-gradient(circle at 85% 75%, rgba(255,46,136,0.22), transparent 45%),    
+radial-gradient(circle at 50% 50%, rgba(106,17,203,0.18), transparent 50%),    
+    
+linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),    
+linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),    
+    
+#0b1020;    
+    
+background-size:    
+100% 100%,    
+100% 100%,    
+100% 100%,    
+45px 45px,    
+45px 45px,    
+cover;    
+    
+color:white;    
+overflow-x:hidden;    
+}    
+/* HEADER (top tight fintech style) */    
+.header{    
+position:sticky;    
+top:0;    
+z-index:100;    
+padding:14px 16px;    
+background:rgba(10,15,30,0.6);    
+backdrop-filter:blur(18px);    
+border-bottom:1px solid rgba(255,255,255,0.05);    
+}    
+    
+/* TITLE (clean exchange branding) */    
+.title{    
+font-size:18px;    
+font-weight:800;    
+letter-spacing:2px;    
+color:#00f7ff;    
+text-transform:uppercase;    
+display:flex;    
+align-items:center;    
+gap:8px;    
+}    
+    
+/* optional glow accent */    
+.title::before{    
+content:"";    
+width:6px;    
+height:6px;    
+border-radius:50%;    
+background:#00ff88;    
+box-shadow:0 0 10px #00ff88;    
+}    
+    
+/* BALANCE CARD */    
+.balance-card{    
+margin-top:15px;    
+background:linear-gradient(135deg,#6a11cb,#ff2e88,#00f7ff);    
+background-size:200% 200%;    
+animation: glowMove 6s ease infinite;    
+    
+border-radius:20px;    
+padding:18px;    
+box-shadow:0 15px 40px rgba(0,0,0,0.35);    
+}    
+    
+/* animated gradient glow */    
+@keyframes glowMove{    
+0%{background-position:0% 50%;}    
+50%{background-position:100% 50%;}    
+100%{background-position:0% 50%;}    
+}    
+    
+/* BALANCE TOP */    
+.balance-top{    
+display:flex;    
+justify-content:space-between;    
+font-size:12px;    
+opacity:0.85;    
+}    
+    
+.balance-title{    
+font-weight:600;    
+}    
+    
+.balance-currency{    
+color:#ffffffaa;    
+}    
+    
+/* AMOUNT */    
+.balance-amount{    
+font-size:36px;    
+font-weight:900;    
+margin:10px 0;    
+text-shadow:0 0 18px rgba(0,255,255,0.25);    
+}    
+    
+/* BUTTON ROW */    
+.action-row{    
+display:flex;    
+gap:10px;    
+margin-top:12px;    
+}    
+    
+/* FINTECH BUTTON STYLE */    
+.action-btn{    
+flex:1;    
+text-align:center;    
+padding:12px;    
+border-radius:14px;    
+font-weight:700;    
+text-decoration:none;    
+transition:0.2s;    
+backdrop-filter:blur(10px);    
+}    
+    
+/* deposit */    
+.deposit{    
+background:rgba(0,247,255,0.15);    
+border:1px solid rgba(0,247,255,0.4);    
+color:#00f7ff;    
+}    
+    
+/* withdraw */    
+.withdraw{    
+background:rgba(0,255,136,0.15);    
+border:1px solid rgba(0,255,136,0.4);    
+color:#00ff88;    
+}    
+    
+/* hover effect */    
+.action-btn:hover{    
+transform:scale(1.03);    
+}    
+#markets{    
+padding-bottom:10px;    
+}    
+    
+body{    
+padding-bottom: env(safe-area-inset-bottom);    
+}    
+/* MARKET ROW */    
+.market{    
+display:flex;    
+justify-content:space-between;    
+align-items:center;    
+padding:12px 0;    
+border-bottom:1px solid rgba(255,255,255,0.05);    
+}    
+    
+.market:last-child{    
+border-bottom:none;    
+}    
+    
+.market-left{    
+display:flex;    
+align-items:center;    
+gap:10px;    
+}    
+    
+.market-left img{    
+width:28px;    
+height:28px;    
+}    
+    
+.market-name{    
+font-weight:700;    
+}    
+    
+.market-sub{    
+font-size:12px;    
+color:#9fb3c8;    
+}    
+    
+.market-right{    
+text-align:right;    
+font-weight:700;    
+color:#00ff88;    
+font-size:13px;    
+}    
+    
+/* NAV (UNCHANGED - DO NOT EDIT) */    
+.nav{    
+position:fixed;    
+bottom:0;    
+left:0;    
+right:0;    
+height:70px;    
+background:rgba(17,25,40,0.95);    
+backdrop-filter:blur(20px);    
+display:flex;    
+justify-content:space-around;    
+align-items:center;    
+border-top:1px solid rgba(255,255,255,0.08);    
+}    
+    
+.nav a{    
+color:#9fb3c8;    
+text-decoration:none;    
+font-size:11px;    
+text-align:center;    
+display:flex;    
+flex-direction:column;    
+align-items:center;    
+gap:3px;    
+flex:1;    
+}    
+    
+.nav a.active{    
+color:#00ff88;    
+}    
+    
+.icon{    
+width:22px;    
+height:22px;    
+fill:none;    
+stroke:currentColor;    
+stroke-width:2;    
+}    
+    
+/* CENTER BUTTON (UNCHANGED) */    
+.center-btn{    
+width:58px;    
+height:58px;    
+background:linear-gradient(135deg,#00f7ff,#00ff88);    
+border-radius:50%;    
+display:flex;    
+align-items:center;    
+justify-content:center;    
+margin-top:-25px;    
+box-shadow:0 10px 25px rgba(0,255,136,0.25);    
+}    
+.container{    
+padding:15px;    
+padding-bottom:140px;    
+}    
+.card{    
+background:rgba(17,25,40,0.85);    
+border-radius:16px;    
+padding:14px;    
+margin-top:12px;    
+border:1px solid rgba(255,255,255,0.05);    
+backdrop-filter:blur(10px);    
+}    
+</style>    
+</head>    
+    
+<body>    
+    
+<!-- HEADER -->    
+<div class="header">    
+  <div class="title">VORTEX MARKETS</div>    
+</div>    
+    
+<div class="container">    
+    
+<!-- BALANCE CARD -->    
+<div class="balance-card">    
+  <div class="balance-top">    
+    <div class="balance-title">TOTAL BALANCE</div>    
+    <div class="balance-currency">(USD)</div>    
+  </div>    
+    
+  <div class="balance-amount" id="balance">$0.00</div>    
+    
+  <div class="action-row">    
+    <a href="deposit.html" class="action-btn deposit">Deposit</a>    
+    <a href="withdraw.html" class="action-btn withdraw">Withdraw</a>    
+  </div>    
+</div>    
+    
+<!-- LIVE MARKETS -->    
+<div class="card">    
+<h3 style="margin-bottom:10px;">Live Crypto Markets</h3>    
+    
+<div id="markets"></div>    
+</div>    
+    
+</div>    
+    
+<!-- BOTTOM NAV (DO NOT TOUCH) -->    
+<div class="nav">    
+    
+  <a href="dashboard.html" class="active">    
+    <svg class="icon" viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>    
+    Home    
+  </a>    
+    
+  <a href="market.html">    
+    <svg class="icon" viewBox="0 0 24 24"><path d="M4 19V5m6 14V9m6 10V3m6 16v-8"/></svg>    
+    Markets    
+  </a>    
+    
+  <a href="trade.html" class="center-btn">    
+    <svg viewBox="0 0 24 24"><path d="M7 17l10-10M7 7h10v10"/></svg>    
+  </a>    
+    
+  <a href="activity.html">    
+    <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l3-3 3 3 5-5"/></svg>    
+    Activity    
+  </a>    
+    
+  <a href="profile.html">    
+    <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4 0-7 2-7 5v2h14v-2c0-3-3-5-7-5z"/></svg>    
+    Profile    
+  </a>    
+    
+</div>    
+    
+<!-- FIREBASE + LIVE LOGIC -->    
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+/* 🔥 FIREBASE CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyD4NQ9EsQqerx6y7v322p2ycraoDWJSRcM",
+authDomain: "airdropusdt-767d7.firebaseapp.com",
+databaseURL: "https://airdropusdt-767d7-default-rtdb.europe-west1.firebasedatabase.app",
+projectId: "airdropusdt-767d7",
+storageBucket: "airdropusdt-767d7.firebasestorage.app",
+messagingSenderId: "627616603037",
+appId: "1:627616603037:web:63041f067800c97fab6d74"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* USER ID */
+const userId = "user1";
+
+/* REALTIME BALANCE */
+const balanceRef = ref(db, `users/${userId}/balance`);
+
+onValue(balanceRef, (snap) => {
+  const val = snap.val() || 0;
+  document.getElementById("balance").innerText =
+    "$" + Number(val).toFixed(2);
+});
+
+/* DEPOSIT / WITHDRAW */
+window.deposit = () => {
+  update(ref(db, `users/${userId}`), {
+    balance: 100
+  });
+};
+
+window.withdraw = () => {
+  update(ref(db, `users/${userId}`), {
+    balance: 0
+  });
+};
+
+/* COINS */
+const coins = [
+"bitcoin","ethereum","tether","binancecoin","solana",
+"ripple","cardano","dogecoin","tron","litecoin"
+];
+
+let marketData = [];
+
+/* LOAD REAL MARKET DATA */
+async function loadMarkets() {
+  try {
+    console.log("Loading markets...");
+
+    const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coins.join(",")}&price_change_percentage=1h`;
+
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error("HTTP Error: " + res.status);
+    }
+
+    const data = await res.json();
+
+    console.log("MARKET DATA:", data);
+
+    // ✅ FIX: STORE DATA PROPERLY
+    marketData = data;
+
+    renderMarkets();
+
+  } catch (err) {
+    console.error("ERROR:", err);
+  }
+}
+
+/* RENDER MARKETS */
+function renderMarkets() {
+  const container = document.getElementById("markets");
+  container.innerHTML = "";
+
+  marketData.forEach((c, index) => {
+
+    const change = c.price_change_percentage_24h || 0;
+    const color = change >= 0 ? "#00ff88" : "#ff4d4d";
+    const sign = change >= 0 ? "+" : "";
+
+    container.innerHTML += `
+      <div class="market">
+        <div class="market-left">
+          <img src="${c.image}" />
+          <div>
+            <div class="market-name">${c.symbol.toUpperCase()}</div>
+            <div class="market-sub">${c.name}</div>
+          </div>
+        </div>
+
+        <div class="market-right">
+          <div>
+            $${c.current_price.toFixed(2)}
+          </div>
+          <div style="font-size:11px; color:${color}">
+            ${sign}${change.toFixed(2)}%
+          </div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+/* AUTO REFRESH */
+loadMarkets();
+setInterval(loadMarkets, 1000);
+
+</script>   
+    
+</body>    
+</html>  
