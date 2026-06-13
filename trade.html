@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at 15% 20%, rgba(0,255,247,0.25), transparent 40%),
+radial-gradient(circle at 85% 75%, rgba(255,46,136,0.22), transparent 45%),
+radial-gradient(circle at 50% 50%, rgba(106,17,203,0.18), transparent 50%),
+linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+#0b1020;
+
+background-size:
+100% 100%,
+100% 100%,
+100% 100%,
+45px 45px,
+45px 45px,
+cover;
+
+color:white;
+overflow:hidden;
+height:100vh;
+display:flex;
+flex-direction:column;
+}
+.header{
+padding:15px;
+font-weight:800;
+color:#00f7ff;
+background:rgba(17,25,40,0.95);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+#chart{
+width:100%;
+height:450px;
+min-height:450px;
+}
+
+.chart-wrap{
+padding:10px;
+}
+.chart-wrap{
+flex:1;
+overflow:hidden;
+}
+.panel{
+padding:15px;
+padding-bottom:100px;
+}
+
+.price{
+font-size:24px;
+font-weight:700;
+margin:10px 0;
+}
+
+.input-row{
+display:flex;
+gap:10px;
+margin:8px 0;
+}
+
+.input-group{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.input-group label{
+font-size:12px;
+color:#9fb3c8;
+margin-bottom:4px;
+font-weight:600;
+}
+
+.input-group input{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,.08);
+outline:none;
+background:#111a2e;
+color:white;
+font-size:15px;
+margin:0;
+}
+
+#entryPrice{
+background:#0d1528;
+color:#00ff88;
+font-weight:700;
+}
+
+select{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+outline:none;
+background:#111a2e;
+color:white;
+font-size:15px;
+}
+button{
+width:48%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+font-weight:700;
+cursor:pointer;
+}
+
+.buy{background:#00ff88;}
+.sell{background:#ff4d4d;}
+
+.row{
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+/* NAV (FIXED LIKE DASHBOARD) */
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:70px;
+background:rgba(17,25,40,0.95);
+backdrop-filter:blur(20px);
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(255,255,255,0.08);
+z-index:100;
+}
+
+.nav a{
+color:#9fb3c8;
+text-decoration:none;
+font-size:11px;
+text-align:center;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:3px;
+flex:1;
+}
+
+.nav a.active{
+color:#00ff88;
+}
+
+.icon{
+width:22px;
+height:22px;
+fill:none;
+stroke:currentColor;
+stroke-width:2;
+}
+
+.center-btn{
+width:58px;
+height:58px;
+background:linear-gradient(135deg,#00f7ff,#00ff88);
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-top:-25px;
+box-shadow:0 10px 25px rgba(0,255,136,0.25);
+}
+#toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:#111a2e;
+color:white;
+padding:12px 18px;
+border-radius:12px;
+font-weight:700;
+opacity:0;
+pointer-events:none;
+transition:.3s;
+z-index:9999;
+border:1px solid rgba(255,255,255,.1);
+}
+
+#toast.show{
+opacity:1;
+top:35px;
+}
+</style>
+</head>
+
+<body>
+</div>
+<div class="header">
+  <div class="title" id="title">VORTEX MARKETS</div>
+</div>
+<div class="chart-wrap">
+  <div id="chart"></div>
+</div>
+<div class="panel">
+  <div class="price" id="price">$0.00</div>
+<div id="balance" style="
+font-size:16px;
+color:#00ff88;
+margin-bottom:10px;">
+Balance: $0.00
+</div>
+<div class="input-row">
+
+  <div class="input-group">
+    <label>Trade Amount</label>
+    <input
+      type="number"
+      id="tradeAmount"
+      placeholder="Amount (USD)"
+    >
+  </div>
+
+  <div class="input-group">
+    <label>Entry Price</label>
+    <input
+      type="number"
+      id="entryPrice"
+      placeholder="Price"
+      readonly
+    >
+  </div>
+
+</div>
+  <select id="coinSelect">
+  <option value="bitcoin">Bitcoin (BTC)</option>
+  <option value="ethereum">Ethereum (ETH)</option>
+  <option value="tether">Tether (USDT)</option>
+  <option value="binancecoin">BNB</option>
+  <option value="solana">Solana (SOL)</option>
+  <option value="ripple">XRP</option>
+  <option value="cardano">Cardano (ADA)</option>
+  <option value="dogecoin">Dogecoin (DOGE)</option>
+  <option value="tron">TRON (TRX)</option>
+  <option value="litecoin">Litecoin (LTC)</option>
+</select>
+<select id="duration">
+  <option value="60">1 Minute</option>
+  <option value="300">5 Minutes</option>
+  <option value="600">10 Minutes</option>
+  <option value="900">15 Minutes</option>
+  <option value="1800">30 Minutes</option>
+  <option value="3600">1 Hour</option>
+  <option value="7200">2 Hours</option>
+  <option value="10800">3 Hours</option>
+  <option value="14400">4 Hours</option>
+  <option value="86400">1 Day</option>
+</select>
+  <div class="row">
+   <button class="buy" id="buyBtn">BUY</button>
+<button class="sell" id="sellBtn">SELL</button>
+  </div>
+</div>
+
+<!-- LIGHTWEIGHT CHART (IMPORTANT FIX VERSION) -->
+<!-- LIGHTWEIGHT CHART -->
+<script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  onValue,
+  push,
+  set,
+  get,
+  update
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+/* ================= FIREBASE ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyD4NQ9EsQqerx6y7v322p2ycraoDWJSRcM",
+  authDomain: "airdropusdt-767d7.firebaseapp.com",
+  databaseURL: "https://airdropusdt-767d7-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "airdropusdt-767d7",
+  storageBucket: "airdropusdt-767d7.firebasestorage.app",
+  messagingSenderId: "627616603037",
+  appId: "1:627616603037:web:63041f067800c97fab6d74"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const auth = getAuth(app);
+
+window.db = db;
+
+onAuthStateChanged(auth, (user) => {
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  window.userId = user.uid;
+
+  const balanceRef =
+    ref(db, `users/${window.userId}/balance`);
+
+  onValue(balanceRef, (snap) => {
+    const balance = Number(snap.val() || 0);
+
+    document.getElementById("balance").innerText =
+      `Balance: $${balance.toFixed(2)}`;
+  });
+
+});
+</script>
+
+<script>
+let currentPrice = 0;
+function initApp() {
+
+const coins = [
+"bitcoin","ethereum","tether","binancecoin","solana",
+"ripple","cardano","dogecoin","tron","litecoin"
+];
+
+const params = new URLSearchParams(location.search);
+
+let coin =
+params.get("coin") ||
+document.getElementById("coinSelect").value;
+
+const API_BASE = "https://api.coingecko.com/api/v3";
+
+document.getElementById("title").innerText =
+  coin.toUpperCase() + " TRADE";
+const coinSelect =
+document.getElementById("coinSelect");
+
+coinSelect.value = coin;
+
+coinSelect.addEventListener("change", () => {
+
+const selectedCoin = coinSelect.value;
+
+window.location.href =
+`trade.html?coin=${selectedCoin}`;
+
+});
+/* SAFE FETCH */
+async function safeFetch(url) {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+/* PRICE */
+async function loadPrice() {
+
+  const data = await safeFetch(
+    `${API_BASE}/simple/price?ids=${coin}&vs_currencies=usd`
+  );
+
+  currentPrice = data?.[coin]?.usd || 0;
+
+  document.getElementById("price").innerText =
+    "$" + currentPrice.toLocaleString();
+
+  updateEntryPrice();
+}
+function updateEntryPrice(){
+
+  const amount =
+  Number(document.getElementById("tradeAmount").value);
+
+  const entryInput =
+  document.getElementById("entryPrice");
+
+  if(!amount || !currentPrice){
+    entryInput.value = "";
+    return;
+  }
+
+  entryInput.value = currentPrice.toFixed(2);
+}
+document
+.getElementById("tradeAmount")
+.addEventListener("input", updateEntryPrice);
+/* CHART */
+const container = document.getElementById("chart");
+
+const chart = LightweightCharts.createChart(container,{
+  width: container.offsetWidth,
+  height: container.offsetHeight || 450,
+  layout: { background: { color: "transparent" }, textColor: "white" },
+  grid: { vertLines: { color: "#222" }, horzLines: { color: "#222" } },
+  width: container.clientWidth,
+  height: 420
+});
+
+const series = chart.addCandlestickSeries({
+  upColor: "#00ff88",
+  downColor: "#ff4d4d",
+  borderVisible: false,
+  wickUpColor: "#00ff88",
+  wickDownColor: "#ff4d4d"
+});
+
+async function loadChart() {
+  const data = await safeFetch(
+    `${API_BASE}/coins/${coin}/ohlc?vs_currency=usd&days=1`
+  );
+
+  let candles = [];
+
+  if (Array.isArray(data) && data.length) {
+    candles = data.map(d => ({
+      time: Math.floor(d[0] / 1000),
+      open: d[1],
+      high: d[2],
+      low: d[3],
+      close: d[4]
+    }));
+  } else {
+    let price = 100;
+
+    for (let i = 0; i < 80; i++) {
+      const open = price;
+      const close = open + (Math.random() - 0.5) * 2;
+
+      candles.push({
+        time: Math.floor(Date.now() / 1000) - (80 - i) * 60,
+        open,
+        high: Math.max(open, close),
+        low: Math.min(open, close),
+        close
+      });
+
+      price = close;
+    }
+  }
+
+  series.setData(candles);
+chart.timeScale().fitContent();
+}
+
+/* INIT */
+loadPrice();
+loadChart();
+
+setInterval(loadPrice, 10000);
+setInterval(loadChart, 10000);
+
+/* RESIZE */
+window.addEventListener("resize", () => {
+  chart.applyOptions({ width: container.clientWidth });
+});
+
+/* TOAST */
+function toast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 2500);
+}
+
+/* =========================
+   BUTTONS (FIXED)
+========================= */
+const buyBtn = document.getElementById("buyBtn");
+const sellBtn = document.getElementById("sellBtn");
+
+buyBtn.onclick = async () => {
+  if (!window.userId) {
+  return toast("Please wait...");
+}
+  const amount =
+Number(document.getElementById("tradeAmount").value);
+
+  const price =
+Number(document.getElementById("entryPrice").value);
+
+  if (!amount) return toast("Enter amount");
+
+  const userRef = ref(window.db, `users/${window.userId}`);
+  const snap = await get(userRef);
+
+  if (!snap.exists()) return toast("User not found");
+
+  const balance = Number(snap.val().balance || 0);
+
+  if (amount > balance) return toast("Insufficient balance");
+
+  await update(userRef, { balance: balance - amount });
+
+  const tradeRef = push(ref(window.db, `users/${window.userId}/trades`));
+
+  await set(tradeRef, {
+    type: "BUY",
+    coin,
+    amount,
+    entryPrice: price,
+    status: "OPEN",
+    createdAt: Date.now()
+  });
+
+  toast("BUY placed");
+};
+
+sellBtn.onclick = async () => {
+  if (!window.userId) {
+  return toast("Please wait...");
+}
+  const amount = Number(document.querySelectorAll("input")[0].value);
+
+  const price = Number(
+    document.getElementById("price").innerText.replace("$", "")
+  );
+
+  if (!amount) return toast("Enter amount");
+
+  const userRef = ref(window.db, `users/${window.userId}`);
+  const snap = await get(userRef);
+
+  if (!snap.exists()) return toast("User not found");
+
+  const balance = Number(snap.val().balance || 0);
+
+  if (amount > balance) return toast("Insufficient balance");
+
+  await update(userRef, { balance: balance - amount });
+
+  const tradeRef = push(ref(window.db, `users/${window.userId}/trades`));
+
+  await set(tradeRef, {
+    type: "SELL",
+    coin,
+    amount,
+    entryPrice: price,
+    status: "OPEN",
+    createdAt: Date.now()
+  });
+
+  toast("SELL placed");
+};
+
+}
+
+/* SAFE AUTO START (IMPORTANT FIX) */
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
+</script>
+<div class="nav">
+  <a href="dashboard.html">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></svg>
+    Home
+  </a>
+
+  <a href="market.html">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M4 19V5m6 14V9m6 10V3m6 16v-8"/></svg>
+    Markets
+  </a>
+
+  <a href="trade.html" class="center-btn">
+    <svg viewBox="0 0 24 24"><path d="M7 17l10-10M7 7h10v10"/></svg>
+  </a>
+
+  <a href="activity.html">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l3-3 3 3 5-5"/></svg>
+    Activity
+  </a>
+
+  <a href="profile.html">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4 0-7 2-7 5v2h14v-2c0-3-3-5-7-5z"/></svg>
+    Profile
+  </a>
+
+</div>
+<div id="toast"></div>
+</body>
+</html>
